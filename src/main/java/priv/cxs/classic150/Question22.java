@@ -2,35 +2,36 @@ package priv.cxs.classic150;
 
 public class Question22 {
 
-    public int strStr(String haystack, String needle) {
-        int max = haystack.length() - needle.length();
-        if (max < 0) {
-            return -1;
+    public String convert(String s, int numRows) {
+        if (numRows == 1) {
+            return s;
         }
-        for (int i = 0; i <= max; i++) {
-            if (haystack.charAt(i) != needle.charAt(0)) {
-                while (i <= max && haystack.charAt(i) != needle.charAt(0)){
-                    i++;
-                };
-                if (i > max) {
-                    return -1;
+        int length = s.length();
+        StringBuilder[] stringBuilders = new StringBuilder[length];
+        for (int i = 0; i < length; i++) {
+            stringBuilders[i] = new StringBuilder();
+        }
+        int pos = 0;
+        boolean increase = true;
+        for (int i = 0; i < length; i++) {
+            stringBuilders[pos].append(s.charAt(i));
+            if (increase) {
+                pos++;
+                if (pos == numRows) {
+                    pos -= 2;
+                    increase = false;
+                }
+            } else {
+                pos--;
+                if (pos < 0) {
+                    pos = 1;
+                    increase = true;
                 }
             }
-            int hp = i;
-            int np = 0;
-            while (np < needle.length() && haystack.charAt(hp) == needle.charAt(np)) {
-                hp++;
-                np++;
-            }
-            if (np == needle.length()) {
-                return i;
-            }
         }
-        return -1;
-    }
-
-    public static void main(String[] args) {
-        int result = new Question22().strStr("mississippi", "a");
-        System.out.println(result);
+        for (int i = 1; i < length; i++) {
+            stringBuilders[0].append(stringBuilders[i]);
+        }
+        return stringBuilders[0].toString();
     }
 }
